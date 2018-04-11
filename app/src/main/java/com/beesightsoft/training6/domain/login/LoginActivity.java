@@ -1,17 +1,25 @@
 package com.beesightsoft.training6.domain.login;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.support.annotation.NonNull;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.beesightsoft.training6.R;
 import com.beesightsoft.training6.factory.DaggerApplicationComponent;
 import com.beesightsoft.training6.service.model.Comment;
+import com.facebook.CallbackManager;
+import com.facebook.FacebookCallback;
+import com.facebook.FacebookException;
+import com.facebook.login.LoginManager;
+import com.facebook.login.LoginResult;
 import com.hannesdorfmann.mosby.mvp.MvpActivity;
 
 import org.androidannotations.annotations.AfterInject;
 import org.androidannotations.annotations.AfterViews;
+import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.ViewById;
 
@@ -25,6 +33,11 @@ public class LoginActivity extends MvpActivity<LoginView, LoginPresenter> implem
 
     @ViewById(R.id.activity_login_tv_content)
     protected TextView tvContent;
+
+    @ViewById(R.id.activity_login_btn_fb)
+    protected Button btnLoginWithFacebook;
+
+    private CallbackManager callbackManager;
 
     @Inject
     protected LoginPresenter presenter;
@@ -46,6 +59,23 @@ public class LoginActivity extends MvpActivity<LoginView, LoginPresenter> implem
     @AfterViews
     void afterView() {
         presenter.getComments();
+        callbackManager = CallbackManager.Factory.create();
+        LoginManager.getInstance().registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
+            @Override
+            public void onSuccess(LoginResult loginResult) {
+                Toast.makeText(LoginActivity.this, "Success: " + loginResult.getAccessToken(), Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onCancel() {
+
+            }
+
+            @Override
+            public void onError(FacebookException error) {
+
+            }
+        });
     }
 
     @Override
@@ -69,7 +99,16 @@ public class LoginActivity extends MvpActivity<LoginView, LoginPresenter> implem
         tvContent.setText("Get comment failed: " + throwable.getMessage());
     }
 
+    @Click(R.id.activity_login_btn_fb)
+    protected void clickLoginWithFacebook() {
+        LoginManager.getInstance().logInWithReadPermissions(this, null);
+    }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        callbackManager.onActivityResult(requestCode, resultCode, data);
+    }
     /*IMPLEMENT PUT, POST, DELETE WITH RETROFIT IN OTHER ACTIVITY*/
 
     /*
