@@ -1,6 +1,6 @@
 package com.beesightsoft.training6.factory;
 
-import com.beesightsoft.training6.domain.LoginActivity;
+import com.beesightsoft.training6.domain.login.LoginActivity;
 
 import dagger.Component;
 

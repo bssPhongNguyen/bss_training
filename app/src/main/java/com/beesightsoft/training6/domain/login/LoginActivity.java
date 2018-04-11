@@ -1,32 +1,33 @@
-package com.beesightsoft.training6.domain;
+package com.beesightsoft.training6.domain.login;
 
 import android.annotation.SuppressLint;
-import android.support.v7.app.AppCompatActivity;
+import android.support.annotation.NonNull;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.beesightsoft.training6.R;
 import com.beesightsoft.training6.factory.DaggerApplicationComponent;
-import com.beesightsoft.training6.service.model.RestCommentService;
-import com.beesightsoft.training5.R;
+import com.beesightsoft.training6.service.model.Comment;
+import com.hannesdorfmann.mosby.mvp.MvpActivity;
 
 import org.androidannotations.annotations.AfterInject;
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.ViewById;
 
-import javax.inject.Inject;
+import java.util.List;
 
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
+import javax.inject.Inject;
 
 @SuppressLint("Registered")
 @EActivity(R.layout.activity_login)
-public class LoginActivity extends AppCompatActivity {
+public class LoginActivity extends MvpActivity<LoginView, LoginPresenter> implements LoginView {
 
     @ViewById(R.id.activity_login_tv_content)
     protected TextView tvContent;
 
     @Inject
-    protected RestCommentService restCommentService;
+    protected LoginPresenter presenter;
 
     @AfterInject
     void afterInject() {
@@ -35,18 +36,39 @@ public class LoginActivity extends AppCompatActivity {
                 .inject(this);
     }
 
+    @NonNull
+    @Override
+    public LoginPresenter createPresenter() {
+        return presenter;
+    }
+
     @SuppressLint("SetTextI18n")
     @AfterViews
     void afterView() {
-        restCommentService.getCommentsUseRx()
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(comments -> {
-                    tvContent.setText("Rx Dagger success: " + comments.size() + " items");
-                }, throwable -> {
-                    tvContent.setText("Rx failed: " + throwable.getMessage());
-                });
+        presenter.getComments();
     }
+
+    @Override
+    public void showLoading() {
+        Toast.makeText(this, "Show loading dialog ...", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void hideLoading() {
+        Toast.makeText(this, "Hide loading dialog ...", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onGetCommentsSuccessful(List<Comment> comments) {
+        tvContent.setText("Get comment success: " + comments.size() + " items");
+    }
+
+    @Override
+    public void onGetCommentsFailed(Throwable throwable) {
+        Toast.makeText(this, throwable.getMessage(), Toast.LENGTH_SHORT).show();
+        tvContent.setText("Get comment failed: " + throwable.getMessage());
+    }
+
 
     /*IMPLEMENT PUT, POST, DELETE WITH RETROFIT IN OTHER ACTIVITY*/
 

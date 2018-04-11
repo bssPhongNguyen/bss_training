@@ -1,4 +1,4 @@
-package com.beesightsoft.training5;
+package com.beesightsoft.training6;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;

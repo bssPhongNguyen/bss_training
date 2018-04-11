@@ -1,4 +1,4 @@
-package com.beesightsoft.training5;
+package com.beesightsoft.training6;
 
 import org.junit.Test;
 

@@ -1,6 +1,6 @@
 package com.beesightsoft.training6.factory;
 
-import com.beesightsoft.training6.service.model.RestCommentService;
+import com.beesightsoft.training6.service.comment.RestCommentService;
 
 import dagger.Module;
 import dagger.Provides;
@@ -12,7 +12,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class ApplicationModule {
 
     @Provides
-    Retrofit provideRetrofit() {
+    public Retrofit provideRetrofit() {
         return new Retrofit.Builder()
                 .baseUrl("https://jsonplaceholder.typicode.com/")
                 .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
@@ -21,7 +21,7 @@ public class ApplicationModule {
     }
 
     @Provides
-    RestCommentService provideRestCommentService(Retrofit retrofit) {
+    public RestCommentService provideRestCommentService(Retrofit retrofit) {
         return retrofit.create(RestCommentService.class);
     }
 

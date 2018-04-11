@@ -18,7 +18,7 @@ android {
     }
 
     defaultConfig {
-        applicationId "com.beesightsoft.training5"
+        applicationId "com.beesightsoft.training6"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode VERSION_CODE

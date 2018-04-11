@@ -1,4 +1,6 @@
-package com.beesightsoft.training6.service.model;
+package com.beesightsoft.training6.service.comment;
+
+import com.beesightsoft.training6.service.model.Comment;
 
 import java.util.List;
 
