@@ -35,13 +35,13 @@ android {
         release {
             keyAlias 'bss_training'
             keyPassword 'com.beesightsoft.training6'
-            storeFile file('D:/Code/bss_training/app/keystores/release-keystore.jks')
+            storeFile file('keystores/release-keystore.jks')
             storePassword 'com.beesightsoft.training6'
         }
         debug {
             keyAlias 'androiddebugkey'
             keyPassword 'android'
-            storeFile file('D:/Code/bss_training/app/keystores/debug-keystore.jks')
+            storeFile file('keystores/debug-keystore.jks')
             storePassword 'android'
         }
     }
